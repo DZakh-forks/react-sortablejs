@@ -193,7 +193,7 @@ var ReactSortable = /** @class */ (function (_super) {
         // @todo forward ref this component
         _this.ref = react.createRef();
         // make all state false because we can't change sortable unless a mouse gesture is made.
-        var newList = __spread(props.list).map(function (item) { return (__assign(__assign({}, item), { chosen: false, selected: false })); });
+        var newList = props.list.map(function (item) { return (__assign(__assign({}, item), { chosen: false, selected: false })); });
         props.setList(newList, _this.sortable, store);
         invariant(
         //@ts-ignore
@@ -382,14 +382,22 @@ var ReactSortable = /** @class */ (function (_super) {
     };
     ReactSortable.prototype.onChoose = function (evt) {
         var _a = this.props, list = _a.list, setList = _a.setList;
-        var newList = __spread(list);
-        newList[evt.oldIndex].chosen = true;
+        var newList = list.map(function (item, index) {
+            if (index === evt.oldIndex) {
+                return __assign(__assign({}, item), { chosen: true });
+            }
+            return item;
+        });
         setList(newList, this.sortable, store);
     };
     ReactSortable.prototype.onUnchoose = function (evt) {
         var _a = this.props, list = _a.list, setList = _a.setList;
-        var newList = __spread(list);
-        newList[evt.oldIndex].chosen = false;
+        var newList = list.map(function (item, index) {
+            if (index === evt.oldIndex) {
+                return __assign(__assign({}, item), { chosen: false });
+            }
+            return item;
+        });
         setList(newList, this.sortable, store);
     };
     ReactSortable.prototype.onSpill = function (evt) {
@@ -399,7 +407,7 @@ var ReactSortable = /** @class */ (function (_super) {
     };
     ReactSortable.prototype.onSelect = function (evt) {
         var _a = this.props, list = _a.list, setList = _a.setList;
-        var newList = __spread(list).map(function (item) { return (__assign(__assign({}, item), { selected: false })); });
+        var newList = list.map(function (item) { return (__assign(__assign({}, item), { selected: false })); });
         evt.newIndicies.forEach(function (curr) {
             var index = curr.index;
             if (index === -1) {
@@ -413,7 +421,7 @@ var ReactSortable = /** @class */ (function (_super) {
     };
     ReactSortable.prototype.onDeselect = function (evt) {
         var _a = this.props, list = _a.list, setList = _a.setList;
-        var newList = __spread(list).map(function (item) { return (__assign(__assign({}, item), { selected: false })); });
+        var newList = list.map(function (item) { return (__assign(__assign({}, item), { selected: false })); });
         evt.newIndicies.forEach(function (curr) {
             var index = curr.index;
             if (index === -1)
